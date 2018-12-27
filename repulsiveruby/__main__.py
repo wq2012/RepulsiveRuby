@@ -77,7 +77,7 @@ start()
 while 1:
 
     # USER INPUT
-    deltat = clock.tick(20)
+    delta_t = clock.tick(20)
     for event in pygame.event.get():
         if not hasattr(event, "key"):
             continue
@@ -107,10 +107,10 @@ while 1:
         ball2_group.clear(resources.screen, resources.intro)
         ball3_group.clear(resources.screen, resources.intro)
         ball4_group.clear(resources.screen, resources.intro)
-        ball1_group.update(deltat)
-        ball2_group.update(deltat, ball1)
-        ball3_group.update(deltat, ball1)
-        ball4_group.update(deltat, ball1)
+        ball1_group.update(delta_t)
+        ball2_group.update(delta_t, ball1)
+        ball3_group.update(delta_t, ball1)
+        ball4_group.update(delta_t, ball1)
         ball1_group.draw(resources.screen)
         ball2_group.draw(resources.screen)
         ball3_group.draw(resources.screen)

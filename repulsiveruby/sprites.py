@@ -1,11 +1,14 @@
 import pygame
 
+from repulsiveruby import resources
+
 
 class MainBallSprite(pygame.sprite.Sprite):
     MAX_FORWARD_SPEED = 10
     MAX_REVERSE_SPEED = 10
     ACCELERATION = 2
     TURN_SPEED = 5
+    RADIUS = 30
 
     def __init__(self, image, position):
         pygame.sprite.Sprite.__init__(self)
@@ -14,7 +17,7 @@ class MainBallSprite(pygame.sprite.Sprite):
         self.speedX = self.speedY = self.direction = 0
         self.k_left = self.k_right = self.k_down = self.k_up = 0
 
-    def update(self, deltat):
+    def update(self, delta_t):
         # SIMULATION
         self.speedY += (-self.k_up + self.k_down)
         self.speedX += (-self.k_left + self.k_right)
@@ -31,14 +34,10 @@ class MainBallSprite(pygame.sprite.Sprite):
 
         x += self.speedX
         y += self.speedY
-        if x < 30:
-            x = 30
-        if x > 770:
-            x = 770
-        if y < 30:
-            y = 30
-        if y > 570:
-            y = 570
+        x = max(x, self.RADIUS)
+        x = min(x, resources.SCREEN_W - self.RADIUS)
+        y = max(y, self.RADIUS)
+        y = min(y, resources.SCREEN_H - self.RADIUS)
         self.position = (x, y)
         self.image = pygame.transform.rotate(self.src_image, self.direction)
         self.rect = self.image.get_rect()
@@ -50,6 +49,7 @@ class BallSprite(pygame.sprite.Sprite):
     MAX_REVERSE_SPEED = 10
     ACCELERATION = 2
     TURN_SPEED = 5
+    RADIUS = 30
 
     def __init__(self, image, position, ball1):
         pygame.sprite.Sprite.__init__(self)
@@ -61,7 +61,7 @@ class BallSprite(pygame.sprite.Sprite):
             self.position[0]-ball1.position[0],
             self.position[1]-ball1.position[1])
 
-    def update(self, deltat, ball1):
+    def update(self, delta_t, ball1):
         # SIMULATION
         self.distance = (
             self.position[0]-ball1.position[0],
@@ -86,17 +86,17 @@ class BallSprite(pygame.sprite.Sprite):
         x, y = self.position
         x += self.speedX
         y += self.speedY
-        if x < 30:
-            x = 30
+        if x < self.RADIUS:
+            x = self.RADIUS
             self.speedX *= -1
-        if x > 770:
-            x = 770
+        if x > resources.SCREEN_W - self.RADIUS:
+            x = resources.SCREEN_W - self.RADIUS
             self.speedX *= -1
-        if y < 30:
-            y = 30
+        if y < self.RADIUS:
+            y = self.RADIUS
             self.speedY *= -1
-        if y > 570:
-            y = 570
+        if y > resources.SCREEN_H - self.RADIUS:
+            y = resources.SCREEN_H - self.RADIUS
             self.speedY *= -1
         self.position = (x, y)
         self.image = self.src_image
