@@ -1,12 +1,14 @@
-#screen is 800*600
+# screen is 800*600
 # ball image is 65*65
 
 # initialization
 import pygame
-import math
 import sys
 import os
-from pygame.locals import *
+from pygame.locals import KEYDOWN, K_RIGHT, K_LEFT, K_UP, K_DOWN
+from pygame.locals import K_d, K_a, K_w, K_s, K_ESCAPE, K_SPACE
+
+
 current_script_dir = os.path.dirname(os.path.abspath(__file__))
 images_dir = os.path.join(current_script_dir, "images")
 sounds_dir = os.path.join(current_script_dir, "sounds")
@@ -87,12 +89,14 @@ class BallSprite(pygame.sprite.Sprite):
         self.speedX = self.speedY = self.speed = self.d = 0
         self.aRight = self.aDown = 0
         self.distance = (
-            self.position[0]-ball1.position[0], self.position[1]-ball1.position[1])
+            self.position[0]-ball1.position[0],
+            self.position[1]-ball1.position[1])
 
     def update(self, deltat, ball1):
         # SIMULATION
         self.distance = (
-            self.position[0]-ball1.position[0], self.position[1]-ball1.position[1])
+            self.position[0]-ball1.position[0],
+            self.position[1]-ball1.position[1])
         self.d = (self.distance[0]**2+self.distance[1]**2)**0.5
         if self.d < 200:
             self.aRight = self.distance[0]/self.d*3
@@ -150,7 +154,7 @@ def start():
     global beginTime
     global ball1, ball2, ball3, ball4
     global ball1_group, ball2_group, ball3_group, ball4_group
-    if GameRunning == False:
+    if not GameRunning:
         screen.blit(background, (0, 0))
         screen.blit(intro, (0, 0))
         ball1 = MainBallSprite(images_dir + "/ball1.png", rect.center)
@@ -220,7 +224,7 @@ while 1:
 
     # RENDERING
 
-    if collide(ball1, ball2, ball3, ball4) == False:
+    if not collide(ball1, ball2, ball3, ball4):
 
         ball1_group.clear(screen, background)
         ball2_group.clear(screen, background)
@@ -239,7 +243,7 @@ while 1:
         ball3_group.draw(screen)
         ball4_group.draw(screen)
 
-        #screen.blit(intro, (0,0))
+        # screen.blit(intro, (0,0))
         pygame.display.flip()
     else:
         loseTime += 1
@@ -247,7 +251,8 @@ while 1:
             screen.blit(lose, (0, 0))
             endTime = pygame.time.get_ticks()
             pygame.display.set_caption(
-                "RepulsiveRuby v2.0 - Your record is %.2f s" % ((endTime-beginTime)/1000.0))
+                "RepulsiveRuby v2.0 - Your record is %.2f s" % (
+                    (endTime-beginTime)/1000.0))
             collideSound.play()
         else:
             loseTime = 2
