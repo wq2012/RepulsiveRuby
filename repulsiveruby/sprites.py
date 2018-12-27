@@ -1,3 +1,4 @@
+from __future__ import print_function
 import pygame
 
 from repulsiveruby import physics
@@ -66,6 +67,7 @@ class BallSprite(pygame.sprite.Sprite):
     def reset(self):
         self.position = self.initPosition
         self.speedX = self.speedY = self.speed = self.d = 0
+        self.direction = 0
         self.aRight = self.aDown = 0
         self.distance = (
             self.position[0] - self.ballMain.position[0],
@@ -109,7 +111,8 @@ class BallSprite(pygame.sprite.Sprite):
             self.speedY *= -1
         self.position = (x, y)
 
-        self.image = self.srcImage
+        self.direction += (self.speedX + self.speedY) / 2
+        self.image = pygame.transform.rotate(self.srcImage, self.direction)
         self.rect = self.image.get_rect()
         self.rect.center = self.position
 
