@@ -22,10 +22,10 @@ except pygame.error:
     print("Ignoring pygame.error for screen")
 
 # images
-background = pygame.image.load(images_dir + "/background.png")
-intro = pygame.image.load(images_dir + "/intro.png")
-lose = pygame.image.load(images_dir + "/lose.png")
+background = pygame.image.load(os.path.join(images_dir, "background.png"))
+intro = pygame.image.load(os.path.join(images_dir, "intro.png"))
+lose = pygame.image.load(os.path.join(images_dir, "lose.png"))
 
 # sounds
-music = pygame.mixer.Sound(sounds_dir + "/music.wav")
-collideSound = pygame.mixer.Sound(sounds_dir + "/collide.wav")
+music = pygame.mixer.Sound(os.path.join(sounds_dir, "music.wav"))
+collideSound = pygame.mixer.Sound(os.path.join(sounds_dir, "collide.wav"))
