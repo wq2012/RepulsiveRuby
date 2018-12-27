@@ -1,5 +1,6 @@
-__all__ = ["physics", "resources", "sprites"]
+__all__ = ["controls", "physics", "resources", "sprites"]
 
+from . import controls
 from . import physics
 from . import resources
 from . import sprites

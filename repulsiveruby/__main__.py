@@ -1,9 +1,8 @@
 import pygame
 import sys
-from pygame.locals import KEYDOWN, K_RIGHT, K_LEFT, K_UP, K_DOWN
-from pygame.locals import K_d, K_a, K_w, K_s, K_ESCAPE, K_SPACE
 
 sys.path.append(".")
+from repulsiveruby import controls  # noqa: E402
 from repulsiveruby import physics  # noqa: E402
 from repulsiveruby import resources  # noqa: E402
 from repulsiveruby import sprites  # noqa: E402
@@ -49,22 +48,9 @@ def main():
     while True:
         # USER INPUT
         delta_t = clock.tick(20)
-        for event in pygame.event.get():
-            if not hasattr(event, "key"):
-                continue
-            down = event.type == KEYDOWN
-            if event.key == K_RIGHT or event.key == K_d:
-                sprites.ball_main.k_right = down * 3
-            elif event.key == K_LEFT or event.key == K_a:
-                sprites.ball_main.k_left = down * 3
-            elif event.key == K_UP or event.key == K_w:
-                sprites.ball_main.k_up = down * 3
-            elif event.key == K_DOWN or event.key == K_s:
-                sprites.ball_main.k_down = down * 3
-            elif event.key == K_ESCAPE:
-                sys.exit(0)
-            elif event.key == K_SPACE:
-                startOneGame(status)
+        result = controls.detectKey(sprites.ball_main)
+        if result == "restart":
+            startOneGame(status)
 
         # RENDERING
         if not physics.ballGroupCollided(sprites.ball_group):
