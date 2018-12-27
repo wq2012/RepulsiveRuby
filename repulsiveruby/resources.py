@@ -4,6 +4,7 @@ import os
 # constants
 SCREEN_W = 800
 SCREEN_H = 600
+CAPTION = "RepulsiveRuby - developed by Quan Wang"
 
 current_script_dir = os.path.dirname(os.path.abspath(__file__))
 images_dir = os.path.join(current_script_dir, "images")

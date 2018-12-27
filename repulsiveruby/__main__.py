@@ -9,8 +9,16 @@ from repulsiveruby import resources  # noqa: E402
 from repulsiveruby import sprites  # noqa: E402
 
 
-def start(isGameRunning, beginTime, loseTime):
-    if not isGameRunning:
+class GameStatus(object):
+    def __init__(self):
+        self.isGameRunning = False
+        self.beginTime = 0
+        self.endTime = 0
+        self.loseTime = 0
+
+
+def startOneGame(status):
+    if not status.isGameRunning:
         resources.screen.blit(resources.background, (0, 0))
         resources.screen.blit(resources.intro, (0, 0))
         sprites.ball_main.reset()
@@ -23,29 +31,22 @@ def start(isGameRunning, beginTime, loseTime):
         sprites.ball2.speedY = -5
         sprites.ball3.speedX = 0
         sprites.ball3.speedY = 5
-        loseTime = 0
-        isGameRunning = True
-        beginTime = pygame.time.get_ticks()
-    return isGameRunning, beginTime, loseTime
+        status.loseTime = 0
+        status.isGameRunning = True
+        status.beginTime = pygame.time.get_ticks()
+
 
 def main():
     clock = pygame.time.Clock()
-    pygame.display.set_caption("RepulsiveRuby v2.0 - developed by Quan Wang")
-
+    pygame.display.set_caption(resources.CAPTION)
     resources.screen.blit(resources.background, (0, 0))
     resources.screen.blit(resources.intro, (0, 0))
-    loseTime = 0
-    isGameRunning = False
-    beginTime = 0
-    endTime = 0
-
     resources.music.play(-1)
 
-    isGameRunning, beginTime, loseTime = start(
-        isGameRunning, beginTime, loseTime)
+    status = GameStatus()
+    startOneGame(status)
 
-    while 1:
-
+    while True:
         # USER INPUT
         delta_t = clock.tick(20)
         for event in pygame.event.get():
@@ -63,14 +64,10 @@ def main():
             elif event.key == K_ESCAPE:
                 sys.exit(0)
             elif event.key == K_SPACE:
-                isGameRunning, beginTime, loseTime = start(
-                    isGameRunning, beginTime, loseTime)
+                startOneGame(status)
 
         # RENDERING
-
-        if not physics.collide(sprites.ball_main, sprites.ball1, sprites.ball2,
-                            sprites.ball3):
-
+        if not physics.ballGroupCollided(sprites.ball_group):
             sprites.ball_group.clear(resources.screen, resources.background)
             sprites.ball_group.clear(resources.screen, resources.intro)
             sprites.ball_group.update(delta_t)
@@ -79,18 +76,19 @@ def main():
             # resources.screen.blit(resources.intro, (0,0))
             pygame.display.flip()
         else:
-            loseTime += 1
-            if loseTime == 1:
+            status.loseTime += 1
+            if status.loseTime == 1:
                 resources.screen.blit(resources.lose, (0, 0))
-                endTime = pygame.time.get_ticks()
+                status.endTime = pygame.time.get_ticks()
                 pygame.display.set_caption(
-                    "RepulsiveRuby v2.0 - Your record is %.2f s" % (
-                        (endTime-beginTime)/1000.0))
+                    "RepulsiveRuby - Your record is %.2f s" % (
+                        (status.endTime - status.beginTime) / 1000.0))
                 resources.collideSound.play()
             else:
-                loseTime = 2
-            isGameRunning = False
+                status.loseTime = 2
+            status.isGameRunning = False
             pygame.display.flip()
+
 
 if __name__ == "__main__":
     main()
