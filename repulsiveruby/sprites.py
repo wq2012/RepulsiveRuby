@@ -58,11 +58,11 @@ class BallSprite(pygame.sprite.Sprite):
     TURN_SPEED = 5
     RADIUS = 32
 
-    def __init__(self, image, position, ball1):
+    def __init__(self, image, position, ball_main):
         pygame.sprite.Sprite.__init__(self)
         self.src_image = pygame.image.load(image)
         self.init_position = position
-        self.ball1 = ball1
+        self.ball_main = ball_main
         self.reset()
 
     def reset(self):
@@ -70,14 +70,14 @@ class BallSprite(pygame.sprite.Sprite):
         self.speedX = self.speedY = self.speed = self.d = 0
         self.aRight = self.aDown = 0
         self.distance = (
-            self.position[0] - self.ball1.position[0],
-            self.position[1] - self.ball1.position[1])
+            self.position[0] - self.ball_main.position[0],
+            self.position[1] - self.ball_main.position[1])
 
     def update(self, delta_t):
         # SIMULATION
         self.distance = (
-            self.position[0] - self.ball1.position[0],
-            self.position[1] - self.ball1.position[1])
+            self.position[0] - self.ball_main.position[0],
+            self.position[1] - self.ball_main.position[1])
         self.d = (self.distance[0]**2+self.distance[1]**2)**0.5
         if self.d < 200:
             self.aRight = self.distance[0]/self.d*3
@@ -121,12 +121,12 @@ class BallSprite(pygame.sprite.Sprite):
 
 # balls (ball images are 65*65)
 rect = resources.screen.get_rect()
-ball1 = MainBallSprite(
-    resources.images_dir + "/ball1.png", rect.center)
+ball_main = MainBallSprite(
+    resources.images_dir + "/ball_main.png", rect.center)
+ball1 = BallSprite(resources.images_dir +
+                   "/ball1.png", (200, 250), ball_main)
 ball2 = BallSprite(resources.images_dir +
-                   "/ball2.png", (200, 250), ball1)
+                   "/ball2.png", (600, 150), ball_main)
 ball3 = BallSprite(resources.images_dir +
-                   "/ball3.png", (600, 150), ball1)
-ball4 = BallSprite(resources.images_dir +
-                   "/ball4.png", (500, 500), ball1)
-ball_group = pygame.sprite.Group(ball1, ball2, ball3, ball4)
+                   "/ball3.png", (500, 500), ball_main)
+ball_group = pygame.sprite.Group(ball_main, ball1, ball2, ball3)

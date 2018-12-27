@@ -13,16 +13,16 @@ def start(isGameRunning, beginTime, loseTime):
     if not isGameRunning:
         resources.screen.blit(resources.background, (0, 0))
         resources.screen.blit(resources.intro, (0, 0))
+        sprites.ball_main.reset()
         sprites.ball1.reset()
         sprites.ball2.reset()
         sprites.ball3.reset()
-        sprites.ball4.reset()
-        sprites.ball2.speedX = -5
+        sprites.ball1.speedX = -5
+        sprites.ball1.speedY = -5
+        sprites.ball2.speedX = 5
         sprites.ball2.speedY = -5
-        sprites.ball3.speedX = 5
-        sprites.ball3.speedY = -5
-        sprites.ball4.speedX = 0
-        sprites.ball4.speedY = 5
+        sprites.ball3.speedX = 0
+        sprites.ball3.speedY = 5
         loseTime = 0
         isGameRunning = True
         beginTime = pygame.time.get_ticks()
@@ -53,13 +53,13 @@ def main():
                 continue
             down = event.type == KEYDOWN
             if event.key == K_RIGHT or event.key == K_d:
-                sprites.ball1.k_right = down * 3
+                sprites.ball_main.k_right = down * 3
             elif event.key == K_LEFT or event.key == K_a:
-                sprites.ball1.k_left = down * 3
+                sprites.ball_main.k_left = down * 3
             elif event.key == K_UP or event.key == K_w:
-                sprites.ball1.k_up = down * 3
+                sprites.ball_main.k_up = down * 3
             elif event.key == K_DOWN or event.key == K_s:
-                sprites.ball1.k_down = down * 3
+                sprites.ball_main.k_down = down * 3
             elif event.key == K_ESCAPE:
                 sys.exit(0)
             elif event.key == K_SPACE:
@@ -68,8 +68,8 @@ def main():
 
         # RENDERING
 
-        if not physics.collide(sprites.ball1, sprites.ball2, sprites.ball3,
-                            sprites.ball4):
+        if not physics.collide(sprites.ball_main, sprites.ball1, sprites.ball2,
+                            sprites.ball3):
 
             sprites.ball_group.clear(resources.screen, resources.background)
             sprites.ball_group.clear(resources.screen, resources.intro)
