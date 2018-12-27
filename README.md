@@ -11,6 +11,12 @@ All sounds and images are created by me.
 
 ## Play the game
 
+### Windows binary
+
+You can download the compiled game [here](https://wangquan.me/personal/game/RepulsiveRuby%20v2.0.rar).
+
+Unzip it, and double click `RepulsiveRuby v2.0.exe` to start the game.
+
 ### Install with pip
 
 First install the game with `pip`:
