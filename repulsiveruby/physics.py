@@ -8,12 +8,12 @@ def twoBallCollided(ballA, ballB):
     return twoBallDistance(ballA, ballB) <= ballA.RADIUS + ballB.RADIUS
 
 
-def ballGroupCollided(ball_group):
-    num_balls = len(ball_group.sprites())
+def ballGroupCollided(ballGroup):
+    num_balls = len(ballGroup.sprites())
     for i in range(num_balls):
         for j in range(i + 1, num_balls):
-            ballA = ball_group.sprites()[i]
-            ballB = ball_group.sprites()[j]
+            ballA = ballGroup.sprites()[i]
+            ballB = ballGroup.sprites()[j]
             if twoBallCollided(ballA, ballB):
                 return True
     return False

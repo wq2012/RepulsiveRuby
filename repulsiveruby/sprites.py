@@ -12,16 +12,16 @@ class MainBallSprite(pygame.sprite.Sprite):
 
     def __init__(self, image, position):
         pygame.sprite.Sprite.__init__(self)
-        self.src_image = pygame.image.load(image)
-        self.init_position = position
+        self.src_image = image
+        self.initPosition = position
         self.reset()
 
     def reset(self):
-        self.position = self.init_position
+        self.position = self.initPosition
         self.speedX = self.speedY = self.direction = 0
         self.k_left = self.k_right = self.k_down = self.k_up = 0
 
-    def update(self, delta_t):
+    def update(self, deltaT):
         # SIMULATION
         self.speedY += (-self.k_up + self.k_down)
         self.speedX += (-self.k_left + self.k_right)
@@ -58,26 +58,26 @@ class BallSprite(pygame.sprite.Sprite):
     TURN_SPEED = 5
     RADIUS = 32
 
-    def __init__(self, image, position, ball_main):
+    def __init__(self, image, position, ballMain):
         pygame.sprite.Sprite.__init__(self)
-        self.src_image = pygame.image.load(image)
-        self.init_position = position
-        self.ball_main = ball_main
+        self.src_image = image
+        self.initPosition = position
+        self.ballMain = ballMain
         self.reset()
 
     def reset(self):
-        self.position = self.init_position
+        self.position = self.initPosition
         self.speedX = self.speedY = self.speed = self.d = 0
         self.aRight = self.aDown = 0
         self.distance = (
-            self.position[0] - self.ball_main.position[0],
-            self.position[1] - self.ball_main.position[1])
+            self.position[0] - self.ballMain.position[0],
+            self.position[1] - self.ballMain.position[1])
 
-    def update(self, delta_t):
+    def update(self, deltaT):
         # SIMULATION
         self.distance = (
-            self.position[0] - self.ball_main.position[0],
-            self.position[1] - self.ball_main.position[1])
+            self.position[0] - self.ballMain.position[0],
+            self.position[1] - self.ballMain.position[1])
         self.d = (self.distance[0]**2+self.distance[1]**2)**0.5
         if self.d < 200:
             self.aRight = self.distance[0]/self.d*3
@@ -121,12 +121,8 @@ class BallSprite(pygame.sprite.Sprite):
 
 # balls (ball images are 65*65)
 rect = resources.screen.get_rect()
-ball_main = MainBallSprite(
-    resources.images_dir + "/ball_main.png", rect.center)
-ball1 = BallSprite(resources.images_dir +
-                   "/ball1.png", (200, 250), ball_main)
-ball2 = BallSprite(resources.images_dir +
-                   "/ball2.png", (600, 150), ball_main)
-ball3 = BallSprite(resources.images_dir +
-                   "/ball3.png", (500, 500), ball_main)
-ball_group = pygame.sprite.Group(ball_main, ball1, ball2, ball3)
+ballMain = MainBallSprite(resources.ballMainImage, rect.center)
+ball1 = BallSprite(resources.ball1Image, (200, 250), ballMain)
+ball2 = BallSprite(resources.ball2Image, (600, 150), ballMain)
+ball3 = BallSprite(resources.ball3Image, (500, 500), ballMain)
+ballGroup = pygame.sprite.Group(ballMain, ball1, ball2, ball3)

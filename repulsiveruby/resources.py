@@ -19,9 +19,15 @@ os.environ["SDL_VIDEO_WINDOW_POS"] = "100,100"
 screen = pygame.display.set_mode((SCREEN_W, SCREEN_H))
 
 # images
-background = pygame.image.load(os.path.join(images_dir, "background.png"))
-intro = pygame.image.load(os.path.join(images_dir, "intro.png"))
-lose = pygame.image.load(os.path.join(images_dir, "lose.png"))
+backgroundImage = pygame.image.load(os.path.join(images_dir, "background.png"))
+introImage = pygame.image.load(os.path.join(images_dir, "intro.png"))
+loseImage = pygame.image.load(os.path.join(images_dir, "lose.png"))
+iconImage = pygame.image.load(os.path.join(images_dir, "icon.png"))
+ballMainImage = pygame.image.load(os.path.join(images_dir, "ball_main.png"))
+ball1Image = pygame.image.load(os.path.join(images_dir, "ball1.png"))
+ball2Image = pygame.image.load(os.path.join(images_dir, "ball2.png"))
+ball3Image = pygame.image.load(os.path.join(images_dir, "ball3.png"))
+pygame.display.set_icon(iconImage)
 
 # sounds
 music = pygame.mixer.Sound(os.path.join(sounds_dir, "music.wav"))
