@@ -8,12 +8,15 @@ from repulsiveruby import resources  # noqa: E402
 from repulsiveruby import sprites  # noqa: E402
 
 
+MS_PER_SECOND = 1000.0
+
+
 class GameStatus(object):
     def __init__(self):
         self.isGameRunning = False
         self.beginTime = 0
         self.endTime = 0
-        self.loseTime = 0
+        self.bestRecord = 0
 
 
 def startOneGame(status):
@@ -30,7 +33,6 @@ def startOneGame(status):
         sprites.ball2.speedY = -5
         sprites.ball3.speedX = 0
         sprites.ball3.speedY = 5
-        status.loseTime = 0
         status.isGameRunning = True
         status.beginTime = pygame.time.get_ticks()
 
@@ -58,20 +60,19 @@ def main():
             sprites.ball_group.clear(resources.screen, resources.intro)
             sprites.ball_group.update(delta_t)
             sprites.ball_group.draw(resources.screen)
-
-            # resources.screen.blit(resources.intro, (0,0))
             pygame.display.flip()
-        else:
-            status.loseTime += 1
-            if status.loseTime == 1:
+        else:  # collided
+            if status.isGameRunning:
                 resources.screen.blit(resources.lose, (0, 0))
                 status.endTime = pygame.time.get_ticks()
+                currentRecord = (
+                    status.endTime - status.beginTime) / MS_PER_SECOND
+                status.bestRecord = max(status.bestRecord, currentRecord)
                 pygame.display.set_caption(
-                    "RepulsiveRuby - Your record is %.2f s" % (
-                        (status.endTime - status.beginTime) / 1000.0))
+                    "RepulsiveRuby - Your survived for {:.2f}s, "
+                    "with best record {:.2f}s".format(
+                        currentRecord, status.bestRecord))
                 resources.collideSound.play()
-            else:
-                status.loseTime = 2
             status.isGameRunning = False
             pygame.display.flip()
 
