@@ -13,7 +13,7 @@ class MainBallSprite(pygame.sprite.Sprite):
 
     def __init__(self, image, position):
         pygame.sprite.Sprite.__init__(self)
-        self.src_image = image
+        self.srcImage = image
         self.initPosition = position
         self.reset()
 
@@ -26,14 +26,11 @@ class MainBallSprite(pygame.sprite.Sprite):
         # SIMULATION
         self.speedY += (-self.k_up + self.k_down)
         self.speedX += (-self.k_left + self.k_right)
-        if self.speedX > self.MAX_FORWARD_SPEED:
-            self.speedX = self.MAX_FORWARD_SPEED
-        if self.speedX < -self.MAX_REVERSE_SPEED:
-            self.speedX = -self.MAX_REVERSE_SPEED
-        if self.speedY > self.MAX_FORWARD_SPEED:
-            self.speedY = self.MAX_FORWARD_SPEED
-        if self.speedY < -self.MAX_REVERSE_SPEED:
-            self.speedY = -self.MAX_REVERSE_SPEED
+        self.speedX = min(self.speedX, self.MAX_FORWARD_SPEED)
+        self.speedX = max(self.speedX, -self.MAX_REVERSE_SPEED)
+        self.speedY = min(self.speedY, self.MAX_FORWARD_SPEED)
+        self.speedY = max(self.speedY, -self.MAX_REVERSE_SPEED)
+
         self.direction += (self.k_right + self.k_left)
         x, y = self.position
 
@@ -47,7 +44,7 @@ class MainBallSprite(pygame.sprite.Sprite):
         y = min(y, resources.SCREEN_H - self.RADIUS)
         self.position = (x, y)
 
-        self.image = pygame.transform.rotate(self.src_image, self.direction)
+        self.image = pygame.transform.rotate(self.srcImage, self.direction)
         self.rect = self.image.get_rect()
         self.rect.center = self.position
 
@@ -61,7 +58,7 @@ class BallSprite(pygame.sprite.Sprite):
 
     def __init__(self, image, position, ballMain):
         pygame.sprite.Sprite.__init__(self)
-        self.src_image = image
+        self.srcImage = image
         self.initPosition = position
         self.ballMain = ballMain
         self.reset()
@@ -88,14 +85,11 @@ class BallSprite(pygame.sprite.Sprite):
 
         self.speed = physics.norm((self.speedX, self.speedY))
 
-        if self.speedX > self.MAX_FORWARD_SPEED:
-            self.speedX = self.MAX_FORWARD_SPEED
-        if self.speedX < -self.MAX_REVERSE_SPEED:
-            self.speedX = -self.MAX_REVERSE_SPEED
-        if self.speedY > self.MAX_FORWARD_SPEED:
-            self.speedY = self.MAX_FORWARD_SPEED
-        if self.speedY < -self.MAX_REVERSE_SPEED:
-            self.speedY = -self.MAX_REVERSE_SPEED
+        self.speedX = min(self.speedX, self.MAX_FORWARD_SPEED)
+        self.speedX = max(self.speedX, -self.MAX_REVERSE_SPEED)
+        self.speedY = min(self.speedY, self.MAX_FORWARD_SPEED)
+        self.speedY = max(self.speedY, -self.MAX_REVERSE_SPEED)
+
         x, y = self.position
         x += self.speedX
         y += self.speedY
@@ -115,7 +109,7 @@ class BallSprite(pygame.sprite.Sprite):
             self.speedY *= -1
         self.position = (x, y)
 
-        self.image = self.src_image
+        self.image = self.srcImage
         self.rect = self.image.get_rect()
         self.rect.center = self.position
 
