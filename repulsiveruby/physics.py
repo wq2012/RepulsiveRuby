@@ -1,7 +1,13 @@
+def norm(vec):
+    sum = 0.0
+    for x in vec:
+        sum += x * x
+    return sum ** 0.5
+
+
 def twoBallDistance(ballA, ballB):
-    delta_x_square = (ballA.position[0] - ballB.position[0]) ** 2
-    delta_y_square = (ballA.position[1] - ballB.position[1]) ** 2
-    return (delta_x_square + delta_y_square) ** 0.5
+    return norm((ballA.position[0] - ballB.position[0],
+                 ballA.position[1] - ballB.position[1]))
 
 
 def twoBallCollided(ballA, ballB):

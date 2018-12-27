@@ -55,7 +55,8 @@ def main():
 
         # RENDERING
         if not physics.ballGroupCollided(sprites.ballGroup):
-            sprites.ballGroup.clear(resources.screen, resources.backgroundImage)
+            sprites.ballGroup.clear(resources.screen,
+                                    resources.backgroundImage)
             sprites.ballGroup.clear(resources.screen, resources.introImage)
             sprites.ballGroup.update(deltaT)
             sprites.ballGroup.draw(resources.screen)

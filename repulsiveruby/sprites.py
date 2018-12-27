@@ -1,5 +1,6 @@
 import pygame
 
+from repulsiveruby import physics
 from repulsiveruby import resources
 
 
@@ -78,14 +79,14 @@ class BallSprite(pygame.sprite.Sprite):
         self.distance = (
             self.position[0] - self.ballMain.position[0],
             self.position[1] - self.ballMain.position[1])
-        self.d = (self.distance[0]**2+self.distance[1]**2)**0.5
+        self.d = physics.norm((self.distance[0], self.distance[1]))
         if self.d < 200:
-            self.aRight = self.distance[0]/self.d*3
-            self.aDown = self.distance[1]/self.d*3
+            self.aRight = self.distance[0] / self.d * 3
+            self.aDown = self.distance[1] / self.d * 3
             self.speedX += self.aRight
             self.speedY += self.aDown
 
-        self.speed = (self.speedX**2+self.speedY**2)**0.5
+        self.speed = physics.norm((self.speedX, self.speedY))
 
         if self.speedX > self.MAX_FORWARD_SPEED:
             self.speedX = self.MAX_FORWARD_SPEED
