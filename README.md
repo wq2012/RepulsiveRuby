@@ -1,4 +1,4 @@
-# RepulsiveRuby
+# RepulsiveRuby [![Build Status](https://travis-ci.org/wq2012/RepulsiveRuby.svg?branch=master)](https://travis-ci.org/wq2012/RepulsiveRuby)
 
 This is a game I made with Python and Pygame in 2011.
 
