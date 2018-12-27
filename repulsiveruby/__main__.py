@@ -8,8 +8,8 @@ import os
 from pygame.locals import KEYDOWN, K_RIGHT, K_LEFT, K_UP, K_DOWN
 from pygame.locals import K_d, K_a, K_w, K_s, K_ESCAPE, K_SPACE
 
-import physics
-import sprites
+from repulsiveruby import physics
+from repulsiveruby import sprites
 
 
 current_script_dir = os.path.dirname(os.path.abspath(__file__))

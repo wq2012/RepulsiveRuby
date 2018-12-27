@@ -1,6 +1,6 @@
 import setuptools
 
-VERSION = "2.1.1"
+VERSION = "2.1.2"
 
 with open("README.md", "r") as file_object:
     LONG_DESCRIPTION = file_object.read()
