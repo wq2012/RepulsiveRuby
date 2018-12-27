@@ -8,7 +8,7 @@ class MainBallSprite(pygame.sprite.Sprite):
     MAX_REVERSE_SPEED = 10
     ACCELERATION = 2
     TURN_SPEED = 5
-    RADIUS = 30
+    RADIUS = 32
 
     def __init__(self, image, position):
         pygame.sprite.Sprite.__init__(self)
@@ -56,7 +56,7 @@ class BallSprite(pygame.sprite.Sprite):
     MAX_REVERSE_SPEED = 10
     ACCELERATION = 2
     TURN_SPEED = 5
-    RADIUS = 30
+    RADIUS = 32
 
     def __init__(self, image, position, ball1):
         pygame.sprite.Sprite.__init__(self)
