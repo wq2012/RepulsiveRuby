@@ -7,7 +7,7 @@ All sounds and images are created by me.
 To start the game, run:
 
 ```
-python repulsiveruby/main.py
+python repulsiveruby
 ```
 
 [![Youtube Demo Screenshot](resources/youtube_demo_screenshot.png)](https://www.youtube.com/watch?v=_84BQWzlzKo)
