@@ -64,7 +64,7 @@ class MainBallSprite(pygame.sprite.Sprite):
         self.image = pygame.transform.rotate(self.src_image, self.direction)
         self.rect = self.image.get_rect()
         self.rect.center = self.position
-        
+
 class BallSprite(pygame.sprite.Sprite):
     MAX_FORWARD_SPEED = 10
     MAX_REVERSE_SPEED = 10
@@ -83,10 +83,10 @@ class BallSprite(pygame.sprite.Sprite):
         self.d=(self.distance[0]**2+self.distance[1]**2)**0.5
         if self.d<200:
             self.aRight=self.distance[0]/self.d*3
-            self.aDown=self.distance[1]/self.d*3      
+            self.aDown=self.distance[1]/self.d*3
             self.speedX += self.aRight
             self.speedY += self.aDown
-            
+
         self.speed=(self.speedX**2+self.speedY**2)**0.5
 
         if self.speedX > self.MAX_FORWARD_SPEED:
@@ -97,7 +97,7 @@ class BallSprite(pygame.sprite.Sprite):
             self.speedY = self.MAX_FORWARD_SPEED
         if self.speedY < -self.MAX_REVERSE_SPEED:
             self.speedY = -self.MAX_REVERSE_SPEED
-        x, y = self.position    
+        x, y = self.position
         x += self.speedX
         y += self.speedY
         if x<30:
@@ -116,7 +116,7 @@ class BallSprite(pygame.sprite.Sprite):
         self.image = self.src_image
         self.rect = self.image.get_rect()
         self.rect.center = self.position
-        
+
 # CREATE BALLS AND RUN
 
 rect = screen.get_rect()
@@ -154,7 +154,7 @@ def start():
         ball4.speedY=5
         loseTime = 0
         GameRunning = True
-	beginTime=pygame.time.get_ticks()
+        beginTime=pygame.time.get_ticks()
 
 def twoBallDistance(ballA,ballB):
     distance=((ballA.position[0]-ballB.position[0])**2+(ballA.position[1]-ballB.position[1])**2)**0.5
@@ -179,7 +179,7 @@ def collide(ball1,ball2,ball3,ball4):
 start()
 
 while 1:
-    
+
     # USER INPUT
     deltat = clock.tick(20)
     for event in pygame.event.get():
@@ -191,11 +191,11 @@ while 1:
         elif event.key == K_DOWN or event.key == K_s: ball1.k_down = down * 3
         elif event.key == K_ESCAPE: sys.exit(0)
         elif event.key == K_SPACE: start()
-        
+
     # RENDERING
 
     if collide(ball1,ball2,ball3,ball4)==False:
-        
+
         ball1_group.clear(screen, background)
         ball2_group.clear(screen, background)
         ball3_group.clear(screen, background)
@@ -213,15 +213,15 @@ while 1:
         ball3_group.draw(screen)
         ball4_group.draw(screen)
 
-	#screen.blit(intro, (0,0))
+        #screen.blit(intro, (0,0))
         pygame.display.flip()
-    else:   
+    else:
         loseTime+=1
         if loseTime == 1:
             screen.blit(lose,(0,0))
-	    endTime=pygame.time.get_ticks()
-	    pygame.display.set_caption("RepulsiveRuby v2.0 - Your record is %.2f s" %((endTime-beginTime)/1000.0) )
-	    collideSound.play()
+            endTime=pygame.time.get_ticks()
+            pygame.display.set_caption("RepulsiveRuby v2.0 - Your record is %.2f s" %((endTime-beginTime)/1000.0) )
+            collideSound.play()
         else:
             loseTime=2
         GameRunning = False
