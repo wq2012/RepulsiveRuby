@@ -117,3 +117,16 @@ class BallSprite(pygame.sprite.Sprite):
         self.image = self.src_image
         self.rect = self.image.get_rect()
         self.rect.center = self.position
+
+
+# balls (ball images are 65*65)
+rect = resources.screen.get_rect()
+ball1 = MainBallSprite(
+    resources.images_dir + "/ball1.png", rect.center)
+ball2 = BallSprite(resources.images_dir +
+                   "/ball2.png", (200, 250), ball1)
+ball3 = BallSprite(resources.images_dir +
+                   "/ball3.png", (600, 150), ball1)
+ball4 = BallSprite(resources.images_dir +
+                   "/ball4.png", (500, 500), ball1)
+ball_group = pygame.sprite.Group(ball1, ball2, ball3, ball4)

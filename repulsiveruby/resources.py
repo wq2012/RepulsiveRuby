@@ -24,5 +24,3 @@ lose = pygame.image.load(images_dir + "/lose.png")
 # sounds
 music = pygame.mixer.Sound(sounds_dir + "/music.wav")
 collideSound = pygame.mixer.Sound(sounds_dir + "/collide.wav")
-
-# ball image is 65*65

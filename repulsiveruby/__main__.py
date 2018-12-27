@@ -21,46 +21,23 @@ endTime = 0
 
 resources.music.play(-1)
 
-
-# CREATE BALLS AND RUN
-
-
-rect = resources.screen.get_rect()
-ball1 = sprites.MainBallSprite(
-    resources.images_dir + "/ball1.png", rect.center)
-ball2 = sprites.BallSprite(resources.images_dir +
-                           "/ball2.png", (200, 250), ball1)
-ball3 = sprites.BallSprite(resources.images_dir +
-                           "/ball3.png", (600, 150), ball1)
-ball4 = sprites.BallSprite(resources.images_dir +
-                           "/ball4.png", (500, 500), ball1)
-ball_group = pygame.sprite.Group(ball1, ball2, ball3, ball4)
-
-
 def start():
     global GameRunning
     global loseTime
     global beginTime
-    global ball1, ball2, ball3, ball4
-    global ball_group
     if not GameRunning:
         resources.screen.blit(resources.background, (0, 0))
         resources.screen.blit(resources.intro, (0, 0))
-        ball1 = sprites.MainBallSprite(
-            resources.images_dir + "/ball1.png", rect.center)
-        ball2 = sprites.BallSprite(
-            resources.images_dir + "/ball2.png", (200, 250), ball1)
-        ball3 = sprites.BallSprite(
-            resources.images_dir + "/ball3.png", (600, 150), ball1)
-        ball4 = sprites.BallSprite(
-            resources.images_dir + "/ball4.png", (500, 500), ball1)
-        ball_group = pygame.sprite.Group(ball1, ball2, ball3, ball4)
-        ball2.speedX = -5
-        ball2.speedY = -5
-        ball3.speedX = 5
-        ball3.speedY = -5
-        ball4.speedX = 0
-        ball4.speedY = 5
+        sprites.ball1.reset()
+        sprites.ball2.reset()
+        sprites.ball3.reset()
+        sprites.ball4.reset()
+        sprites.ball2.speedX = -5
+        sprites.ball2.speedY = -5
+        sprites.ball3.speedX = 5
+        sprites.ball3.speedY = -5
+        sprites.ball4.speedX = 0
+        sprites.ball4.speedY = 5
         loseTime = 0
         GameRunning = True
         beginTime = pygame.time.get_ticks()
@@ -77,13 +54,13 @@ while 1:
             continue
         down = event.type == KEYDOWN
         if event.key == K_RIGHT or event.key == K_d:
-            ball1.k_right = down * 3
+            sprites.ball1.k_right = down * 3
         elif event.key == K_LEFT or event.key == K_a:
-            ball1.k_left = down * 3
+            sprites.ball1.k_left = down * 3
         elif event.key == K_UP or event.key == K_w:
-            ball1.k_up = down * 3
+            sprites.ball1.k_up = down * 3
         elif event.key == K_DOWN or event.key == K_s:
-            ball1.k_down = down * 3
+            sprites.ball1.k_down = down * 3
         elif event.key == K_ESCAPE:
             sys.exit(0)
         elif event.key == K_SPACE:
@@ -91,12 +68,13 @@ while 1:
 
     # RENDERING
 
-    if not physics.collide(ball1, ball2, ball3, ball4):
+    if not physics.collide(sprites.ball1, sprites.ball2, sprites.ball3,
+                           sprites.ball4):
 
-        ball_group.clear(resources.screen, resources.background)
-        ball_group.clear(resources.screen, resources.intro)
-        ball_group.update(delta_t)
-        ball_group.draw(resources.screen)
+        sprites.ball_group.clear(resources.screen, resources.background)
+        sprites.ball_group.clear(resources.screen, resources.intro)
+        sprites.ball_group.update(delta_t)
+        sprites.ball_group.draw(resources.screen)
 
         # resources.screen.blit(resources.intro, (0,0))
         pygame.display.flip()
