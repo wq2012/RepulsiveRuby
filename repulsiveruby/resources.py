@@ -27,5 +27,8 @@ intro = pygame.image.load(os.path.join(images_dir, "intro.png"))
 lose = pygame.image.load(os.path.join(images_dir, "lose.png"))
 
 # sounds
-music = pygame.mixer.Sound(os.path.join(sounds_dir, "music.wav"))
-collideSound = pygame.mixer.Sound(os.path.join(sounds_dir, "collide.wav"))
+try:
+    music = pygame.mixer.Sound(os.path.join(sounds_dir, "music.wav"))
+    collideSound = pygame.mixer.Sound(os.path.join(sounds_dir, "collide.wav"))
+except (pygame.error, MemoryError):
+    print("Error loading sounds")
