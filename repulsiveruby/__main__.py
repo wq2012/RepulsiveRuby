@@ -21,6 +21,8 @@ class GameStatus(object):
 
 def startOneGame(status):
     if not status.isGameRunning:
+        resources.screen.blit(resources.backgroundImage, (0, 0))
+        resources.screen.blit(resources.introImage, (0, 0))
         sprites.ballMain.reset()
         sprites.ball1.reset()
         sprites.ball2.reset()
@@ -38,8 +40,6 @@ def startOneGame(status):
 def main():
     clock = pygame.time.Clock()
     pygame.display.set_caption(resources.CAPTION)
-    resources.screen.blit(resources.backgroundImage, (0, 0))
-    resources.screen.blit(resources.introImage, (0, 0))
     resources.music.play(-1)
 
     status = GameStatus()
