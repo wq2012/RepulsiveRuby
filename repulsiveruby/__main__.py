@@ -34,10 +34,7 @@ ball3 = sprites.BallSprite(resources.images_dir +
                            "/ball3.png", (600, 150), ball1)
 ball4 = sprites.BallSprite(resources.images_dir +
                            "/ball4.png", (500, 500), ball1)
-ball1_group = pygame.sprite.RenderPlain(ball1)
-ball2_group = pygame.sprite.RenderPlain(ball2)
-ball3_group = pygame.sprite.RenderPlain(ball3)
-ball4_group = pygame.sprite.RenderPlain(ball4)
+ball_group = pygame.sprite.Group(ball1, ball2, ball3, ball4)
 
 
 def start():
@@ -45,7 +42,7 @@ def start():
     global loseTime
     global beginTime
     global ball1, ball2, ball3, ball4
-    global ball1_group, ball2_group, ball3_group, ball4_group
+    global ball_group
     if not GameRunning:
         resources.screen.blit(resources.background, (0, 0))
         resources.screen.blit(resources.intro, (0, 0))
@@ -57,10 +54,7 @@ def start():
             resources.images_dir + "/ball3.png", (600, 150), ball1)
         ball4 = sprites.BallSprite(
             resources.images_dir + "/ball4.png", (500, 500), ball1)
-        ball1_group = pygame.sprite.RenderPlain(ball1)
-        ball2_group = pygame.sprite.RenderPlain(ball2)
-        ball3_group = pygame.sprite.RenderPlain(ball3)
-        ball4_group = pygame.sprite.RenderPlain(ball4)
+        ball_group = pygame.sprite.Group(ball1, ball2, ball3, ball4)
         ball2.speedX = -5
         ball2.speedY = -5
         ball3.speedX = 5
@@ -99,22 +93,10 @@ while 1:
 
     if not physics.collide(ball1, ball2, ball3, ball4):
 
-        ball1_group.clear(resources.screen, resources.background)
-        ball2_group.clear(resources.screen, resources.background)
-        ball3_group.clear(resources.screen, resources.background)
-        ball4_group.clear(resources.screen, resources.background)
-        ball1_group.clear(resources.screen, resources.intro)
-        ball2_group.clear(resources.screen, resources.intro)
-        ball3_group.clear(resources.screen, resources.intro)
-        ball4_group.clear(resources.screen, resources.intro)
-        ball1_group.update(delta_t)
-        ball2_group.update(delta_t)
-        ball3_group.update(delta_t)
-        ball4_group.update(delta_t)
-        ball1_group.draw(resources.screen)
-        ball2_group.draw(resources.screen)
-        ball3_group.draw(resources.screen)
-        ball4_group.draw(resources.screen)
+        ball_group.clear(resources.screen, resources.background)
+        ball_group.clear(resources.screen, resources.intro)
+        ball_group.update(delta_t)
+        ball_group.draw(resources.screen)
 
         # resources.screen.blit(resources.intro, (0,0))
         pygame.display.flip()
