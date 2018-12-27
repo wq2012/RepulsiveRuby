@@ -1,3 +1,4 @@
-__all__ = ["sprites"]
+__all__ = ["physics", "sprites"]
 
+from . import physics
 from . import sprites
