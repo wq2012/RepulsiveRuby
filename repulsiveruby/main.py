@@ -5,23 +5,26 @@
 import pygame, math, sys
 import os
 from pygame.locals import *
+current_script_dir = os.path.dirname(os.path.abspath(__file__))
+images_dir = os.path.join(current_script_dir, "images")
+sounds_dir = os.path.join(current_script_dir, "sounds")
 pygame.init()
 pygame.mixer.pre_init(44100, 16, 2, 4096)
-os.environ['SDL_VIDEO_WINDOW_POS'] = '100,100'
+os.environ["SDL_VIDEO_WINDOW_POS"] = "100,100"
 screen = pygame.display.set_mode((800, 600))
 clock = pygame.time.Clock()
 pygame.display.set_caption("RepulsiveRuby v2.0 - developed by Quan Wang")
-background = pygame.image.load('images/background.png')
-intro = pygame.image.load('images/intro.png')
-lose = pygame.image.load('images/lose.png')
+background = pygame.image.load(images_dir + "/background.png")
+intro = pygame.image.load(images_dir + "/intro.png")
+lose = pygame.image.load(images_dir + "/lose.png")
 screen.blit(background, (0,0))
 screen.blit(intro, (0,0))
 loseTime=0
 GameRunning = False
 beginTime=0
 endTime=0
-music = pygame.mixer.Sound("sound/music.wav")
-collideSound = pygame.mixer.Sound("sound/collide.wav")
+music = pygame.mixer.Sound(sounds_dir + "/music.wav")
+collideSound = pygame.mixer.Sound(sounds_dir + "/collide.wav")
 music.play(-1)
 
 class MainBallSprite(pygame.sprite.Sprite):
@@ -120,10 +123,10 @@ class BallSprite(pygame.sprite.Sprite):
 # CREATE BALLS AND RUN
 
 rect = screen.get_rect()
-ball1 = MainBallSprite('images/ball1.png', rect.center)
-ball2 = BallSprite('images/ball2.png', (200,250),ball1)
-ball3 = BallSprite('images/ball3.png', (600,150),ball1)
-ball4 = BallSprite('images/ball4.png', (500,500),ball1)
+ball1 = MainBallSprite(images_dir + "/ball1.png", rect.center)
+ball2 = BallSprite(images_dir + "/ball2.png", (200,250),ball1)
+ball3 = BallSprite(images_dir + "/ball3.png", (600,150),ball1)
+ball4 = BallSprite(images_dir + "/ball4.png", (500,500),ball1)
 ball1_group = pygame.sprite.RenderPlain(ball1)
 ball2_group = pygame.sprite.RenderPlain(ball2)
 ball3_group = pygame.sprite.RenderPlain(ball3)
@@ -138,10 +141,10 @@ def start():
     if GameRunning == False:
         screen.blit(background, (0,0))
         screen.blit(intro, (0,0))
-        ball1 = MainBallSprite('images/ball1.png', rect.center)
-        ball2 = BallSprite('images/ball2.png', (200,250),ball1)
-        ball3 = BallSprite('images/ball3.png', (600,150),ball1)
-        ball4 = BallSprite('images/ball4.png', (500,500),ball1)
+        ball1 = MainBallSprite(images_dir + "/ball1.png", rect.center)
+        ball2 = BallSprite(images_dir + "/ball2.png", (200,250),ball1)
+        ball3 = BallSprite(images_dir + "/ball3.png", (600,150),ball1)
+        ball4 = BallSprite(images_dir + "/ball4.png", (500,500),ball1)
         ball1_group = pygame.sprite.RenderPlain(ball1)
         ball2_group = pygame.sprite.RenderPlain(ball2)
         ball3_group = pygame.sprite.RenderPlain(ball3)
@@ -183,7 +186,7 @@ while 1:
     # USER INPUT
     deltat = clock.tick(20)
     for event in pygame.event.get():
-        if not hasattr(event, 'key'): continue
+        if not hasattr(event, "key"): continue
         down = event.type == KEYDOWN
         if event.key == K_RIGHT or event.key == K_d: ball1.k_right = down * 3
         elif event.key == K_LEFT or event.key == K_a: ball1.k_left = down * 3
