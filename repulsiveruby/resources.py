@@ -1,3 +1,4 @@
+from __future__ import print_function
 import pygame
 import os
 
@@ -15,7 +16,10 @@ pygame.init()
 
 pygame.mixer.pre_init(44100, 16, 2, 4096)
 os.environ["SDL_VIDEO_WINDOW_POS"] = "100,100"
-screen = pygame.display.set_mode((SCREEN_W, SCREEN_H))
+try:
+    screen = pygame.display.set_mode((SCREEN_W, SCREEN_H))
+except pygame.error:
+    print("Ignoring pygame.error for screen")
 
 # images
 background = pygame.image.load(images_dir + "/background.png")
