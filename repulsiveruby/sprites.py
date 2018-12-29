@@ -114,12 +114,3 @@ class RepulsiveBallSprite(BaseBallSprite):
         self.image = pygame.transform.rotate(self.srcImage, self.direction)
         self.rect = self.image.get_rect()
         self.rect.center = self.position
-
-
-# balls (ball images are 65*65)
-rect = resources.screen.get_rect()
-ballMain = MainBallSprite(resources.ballMainImage, rect.center)
-ball1 = RepulsiveBallSprite(resources.ball1Image, (200, 250), ballMain)
-ball2 = RepulsiveBallSprite(resources.ball2Image, (600, 150), ballMain)
-ball3 = RepulsiveBallSprite(resources.ball3Image, (500, 500), ballMain)
-ballGroup = pygame.sprite.Group(ballMain, ball1, ball2, ball3)

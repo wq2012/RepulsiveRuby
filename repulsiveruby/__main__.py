@@ -19,20 +19,28 @@ class GameStatus(object):
         self.bestRecord = 0
 
 
-def startOneGame(status):
+def startOneGame(status, ballGroup):
     if not status.isGameRunning:
         resources.screen.blit(resources.backgroundImage, (0, 0))
         resources.screen.blit(resources.introImage, (0, 0))
-        sprites.ballMain.reset()
-        sprites.ball1.reset()
-        sprites.ball2.reset()
-        sprites.ball3.reset()
-        sprites.ball1.speedX = -5
-        sprites.ball1.speedY = -5
-        sprites.ball2.speedX = 5
-        sprites.ball2.speedY = -5
-        sprites.ball3.speedX = 0
-        sprites.ball3.speedY = 5
+        rect = resources.screen.get_rect()
+        # balls (ball images are 65*65)
+        ballMain = sprites.MainBallSprite(resources.ballMainImage, rect.center)
+        ball1 = sprites.RepulsiveBallSprite(
+            resources.ball1Image, (200, 250), ballMain)
+        ball2 = sprites.RepulsiveBallSprite(
+            resources.ball2Image, (600, 150), ballMain)
+        ball3 = sprites.RepulsiveBallSprite(
+            resources.ball3Image, (500, 500), ballMain)
+        ball1.speedX = -5
+        ball1.speedY = -5
+        ball2.speedX = 5
+        ball2.speedY = -5
+        ball3.speedX = 0
+        ball3.speedY = 5
+        ballGroup.empty()
+        ballGroup.add(ballMain, ball1, ball2, ball3)
+
         status.isGameRunning = True
         status.beginTime = pygame.time.get_ticks()
 
@@ -43,23 +51,24 @@ def main():
     resources.music.play(-1)
 
     status = GameStatus()
-    startOneGame(status)
+    ballGroup = pygame.sprite.Group()
+    startOneGame(status, ballGroup)
 
     # main loop of game
     while True:
         # get user input
         deltaT = clock.tick(FRAMERATE)
-        result = controls.detectKey(sprites.ballMain)
+        result = controls.detectKey(ballGroup.sprites()[0])
         if result == "restart":
-            startOneGame(status)
+            startOneGame(status, ballGroup)
 
-        # RENDERING
-        if not physics.ballGroupCollided(sprites.ballGroup):
-            sprites.ballGroup.clear(resources.screen,
-                                    resources.backgroundImage)
-            sprites.ballGroup.clear(resources.screen, resources.introImage)
-            sprites.ballGroup.update(deltaT)
-            sprites.ballGroup.draw(resources.screen)
+        # rendering
+        if not physics.ballGroupCollided(ballGroup):
+            ballGroup.clear(resources.screen,
+                            resources.backgroundImage)
+            ballGroup.clear(resources.screen, resources.introImage)
+            ballGroup.update(deltaT)
+            ballGroup.draw(resources.screen)
             pygame.display.flip()
         else:  # collided
             if status.isGameRunning:
