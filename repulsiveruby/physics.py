@@ -11,7 +11,7 @@ def twoBallDistance(ballA, ballB):
 
 
 def twoBallCollided(ballA, ballB):
-    return twoBallDistance(ballA, ballB) <= ballA.RADIUS + ballB.RADIUS
+    return twoBallDistance(ballA, ballB) <= ballA.radius + ballB.radius
 
 
 def ballGroupCollided(ballGroup):

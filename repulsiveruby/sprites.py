@@ -5,15 +5,25 @@ from repulsiveruby import physics
 from repulsiveruby import resources
 
 
-class MainBallSprite(pygame.sprite.Sprite):
-    MAX_FORWARD_SPEED = 10
-    MAX_REVERSE_SPEED = 10
-    ACCELERATION = 2
-    TURN_SPEED = 5
-    RADIUS = 32
+class BaseBallSprite(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.speedX = 0
+        self.speedY = 0
+        self.maxSpeed = 15
+        self.radius = 32
+
+    def constrainSpeed(self):
+        currentSpeed = physics.norm((self.speedX, self.speedY))
+        if currentSpeed > self.maxSpeed:
+            self.speedX = self.speedX / currentSpeed * self.maxSpeed
+            self.speedY = self.speedY / currentSpeed * self.maxSpeed
+
+
+class MainBallSprite(BaseBallSprite):
 
     def __init__(self, image, position):
-        pygame.sprite.Sprite.__init__(self)
+        BaseBallSprite.__init__(self)
         self.srcImage = image
         self.initPosition = position
         self.reset()
@@ -27,10 +37,7 @@ class MainBallSprite(pygame.sprite.Sprite):
         # SIMULATION
         self.speedY += (-self.k_up + self.k_down)
         self.speedX += (-self.k_left + self.k_right)
-        self.speedX = min(self.speedX, self.MAX_FORWARD_SPEED)
-        self.speedX = max(self.speedX, -self.MAX_REVERSE_SPEED)
-        self.speedY = min(self.speedY, self.MAX_FORWARD_SPEED)
-        self.speedY = max(self.speedY, -self.MAX_REVERSE_SPEED)
+        self.constrainSpeed()
 
         self.direction += (self.k_right + self.k_left)
         x, y = self.position
@@ -39,10 +46,10 @@ class MainBallSprite(pygame.sprite.Sprite):
         y += self.speedY
 
         # boundary detection
-        x = max(x, self.RADIUS)
-        x = min(x, resources.SCREEN_W - self.RADIUS)
-        y = max(y, self.RADIUS)
-        y = min(y, resources.SCREEN_H - self.RADIUS)
+        x = max(x, self.radius)
+        x = min(x, resources.SCREEN_W - self.radius)
+        y = max(y, self.radius)
+        y = min(y, resources.SCREEN_H - self.radius)
         self.position = (x, y)
 
         self.image = pygame.transform.rotate(self.srcImage, self.direction)
@@ -50,15 +57,10 @@ class MainBallSprite(pygame.sprite.Sprite):
         self.rect.center = self.position
 
 
-class BallSprite(pygame.sprite.Sprite):
-    MAX_FORWARD_SPEED = 10
-    MAX_REVERSE_SPEED = 10
-    ACCELERATION = 2
-    TURN_SPEED = 5
-    RADIUS = 32
+class RepulsiveBallSprite(BaseBallSprite):
 
     def __init__(self, image, position, ballMain):
-        pygame.sprite.Sprite.__init__(self)
+        BaseBallSprite.__init__(self)
         self.srcImage = image
         self.initPosition = position
         self.ballMain = ballMain
@@ -87,27 +89,24 @@ class BallSprite(pygame.sprite.Sprite):
 
         self.speed = physics.norm((self.speedX, self.speedY))
 
-        self.speedX = min(self.speedX, self.MAX_FORWARD_SPEED)
-        self.speedX = max(self.speedX, -self.MAX_REVERSE_SPEED)
-        self.speedY = min(self.speedY, self.MAX_FORWARD_SPEED)
-        self.speedY = max(self.speedY, -self.MAX_REVERSE_SPEED)
+        self.constrainSpeed()
 
         x, y = self.position
         x += self.speedX
         y += self.speedY
 
         # boundary detection
-        if x < self.RADIUS:
-            x = self.RADIUS
+        if x < self.radius:
+            x = self.radius
             self.speedX *= -1
-        if x > resources.SCREEN_W - self.RADIUS:
-            x = resources.SCREEN_W - self.RADIUS
+        if x > resources.SCREEN_W - self.radius:
+            x = resources.SCREEN_W - self.radius
             self.speedX *= -1
-        if y < self.RADIUS:
-            y = self.RADIUS
+        if y < self.radius:
+            y = self.radius
             self.speedY *= -1
-        if y > resources.SCREEN_H - self.RADIUS:
-            y = resources.SCREEN_H - self.RADIUS
+        if y > resources.SCREEN_H - self.radius:
+            y = resources.SCREEN_H - self.radius
             self.speedY *= -1
         self.position = (x, y)
 
@@ -120,7 +119,7 @@ class BallSprite(pygame.sprite.Sprite):
 # balls (ball images are 65*65)
 rect = resources.screen.get_rect()
 ballMain = MainBallSprite(resources.ballMainImage, rect.center)
-ball1 = BallSprite(resources.ball1Image, (200, 250), ballMain)
-ball2 = BallSprite(resources.ball2Image, (600, 150), ballMain)
-ball3 = BallSprite(resources.ball3Image, (500, 500), ballMain)
+ball1 = RepulsiveBallSprite(resources.ball1Image, (200, 250), ballMain)
+ball2 = RepulsiveBallSprite(resources.ball2Image, (600, 150), ballMain)
+ball3 = RepulsiveBallSprite(resources.ball3Image, (500, 500), ballMain)
 ballGroup = pygame.sprite.Group(ballMain, ball1, ball2, ball3)
