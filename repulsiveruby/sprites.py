@@ -19,6 +19,30 @@ class BaseBallSprite(pygame.sprite.Sprite):
             self.speedX = self.speedX / currentSpeed * self.maxSpeed
             self.speedY = self.speedY / currentSpeed * self.maxSpeed
 
+    def updatePosition(self, bounce):
+        x, y = self.position
+        x += self.speedX
+        y += self.speedY
+
+        # boundary detection
+        if x < self.radius:
+            x = self.radius
+            if bounce:
+                self.speedX *= -1
+        if x > resources.SCREEN_W - self.radius:
+            x = resources.SCREEN_W - self.radius
+            if bounce:
+                self.speedX *= -1
+        if y < self.radius:
+            y = self.radius
+            if bounce:
+                self.speedY *= -1
+        if y > resources.SCREEN_H - self.radius:
+            y = resources.SCREEN_H - self.radius
+            if bounce:
+                self.speedY *= -1
+        self.position = (x, y)
+
 
 class MainBallSprite(BaseBallSprite):
 
@@ -40,17 +64,7 @@ class MainBallSprite(BaseBallSprite):
         self.constrainSpeed()
 
         self.direction += (self.k_right + self.k_left)
-        x, y = self.position
-
-        x += self.speedX
-        y += self.speedY
-
-        # boundary detection
-        x = max(x, self.radius)
-        x = min(x, resources.SCREEN_W - self.radius)
-        y = max(y, self.radius)
-        y = min(y, resources.SCREEN_H - self.radius)
-        self.position = (x, y)
+        self.updatePosition(False)
 
         self.image = pygame.transform.rotate(self.srcImage, self.direction)
         self.rect = self.image.get_rect()
@@ -90,25 +104,7 @@ class RepulsiveBallSprite(BaseBallSprite):
         self.speed = physics.norm((self.speedX, self.speedY))
 
         self.constrainSpeed()
-
-        x, y = self.position
-        x += self.speedX
-        y += self.speedY
-
-        # boundary detection
-        if x < self.radius:
-            x = self.radius
-            self.speedX *= -1
-        if x > resources.SCREEN_W - self.radius:
-            x = resources.SCREEN_W - self.radius
-            self.speedX *= -1
-        if y < self.radius:
-            y = self.radius
-            self.speedY *= -1
-        if y > resources.SCREEN_H - self.radius:
-            y = resources.SCREEN_H - self.radius
-            self.speedY *= -1
-        self.position = (x, y)
+        self.updatePosition(True)
 
         self.direction += (self.speedX + self.speedY) / 2
         self.image = pygame.transform.rotate(self.srcImage, self.direction)
