@@ -55,15 +55,7 @@ class MainBallSprite(BaseBallSprite):
     def __init__(self, image, position):
         BaseBallSprite.__init__(self)
         self.srcImage = image
-        self.initPosition = position
-        self.reset()
-
-    def reset(self):
-        self.position = self.initPosition
-        self.speedX = 0
-        self.speedY = 0
-        self.accelerationX = 0
-        self.accelerationY = 0
+        self.position = position
         self.k_left = 0
         self.k_right = 0
         self.k_down = 0
@@ -90,16 +82,8 @@ class RepulsiveBallSprite(BaseBallSprite):
     def __init__(self, image, position, ballMain):
         BaseBallSprite.__init__(self)
         self.srcImage = image
-        self.initPosition = position
+        self.position = position
         self.ballMain = ballMain
-        self.reset()
-
-    def reset(self):
-        self.position = self.initPosition
-        self.speedX = 0
-        self.speedY = 0
-        self.accelerationX = 0
-        self.accelerationY = 0
 
     def update(self, deltaT):
         # SIMULATION
