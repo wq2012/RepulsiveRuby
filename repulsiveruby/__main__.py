@@ -57,7 +57,7 @@ def main():
     # main loop of game
     while True:
         # get user input
-        deltaT = clock.tick(FRAMERATE)
+        clock.tick(FRAMERATE)  # return value deltaT currently not used
         result = controls.detectKey(ballGroup.sprites()[0])
         if result == "restart":
             startOneGame(status, ballGroup)
@@ -67,7 +67,7 @@ def main():
             ballGroup.clear(resources.screen,
                             resources.backgroundImage)
             ballGroup.clear(resources.screen, resources.introImage)
-            ballGroup.update(deltaT)
+            ballGroup.update()
             ballGroup.draw(resources.screen)
             pygame.display.flip()
         else:  # collided

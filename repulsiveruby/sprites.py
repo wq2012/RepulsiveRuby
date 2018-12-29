@@ -35,19 +35,39 @@ class BaseBallSprite(pygame.sprite.Sprite):
             x = self.radius
             if bounce:
                 self.speedX *= -1
+            else:
+                self.speedX /= 2
         if x > resources.SCREEN_W - self.radius:
             x = resources.SCREEN_W - self.radius
             if bounce:
                 self.speedX *= -1
+            else:
+                self.speedX /= 2
         if y < self.radius:
             y = self.radius
             if bounce:
                 self.speedY *= -1
+            else:
+                self.speedY /= 2
         if y > resources.SCREEN_H - self.radius:
             y = resources.SCREEN_H - self.radius
             if bounce:
                 self.speedY *= -1
+            else:
+                self.speedY /= 2
         self.position = (x, y)
+
+    def updateImageAndRect(self):
+        self.direction += (self.speedX + self.speedY) / 2
+        self.image = pygame.transform.rotate(self.srcImage, self.direction)
+        self.rect = self.image.get_rect()
+        self.rect.center = self.position
+
+    def update(self):
+        self.computeAcceleration()
+        self.updateSpeed()
+        self.updatePosition(self.bounce)
+        self.updateImageAndRect()
 
 
 class MainBallSprite(BaseBallSprite):
@@ -56,25 +76,16 @@ class MainBallSprite(BaseBallSprite):
         BaseBallSprite.__init__(self)
         self.srcImage = image
         self.position = position
+        self.bounce = False
         self.k_left = 0
         self.k_right = 0
         self.k_down = 0
         self.k_up = 0
 
-    def update(self, deltaT):
-        # update speed according to key
+    def computeAcceleration(self):
+        # compute acceleration
         self.accelerationX = (-self.k_left + self.k_right)
         self.accelerationY = (-self.k_up + self.k_down)
-        self.updateSpeed()
-
-        # update position
-        self.updatePosition(False)
-
-        # update image and rect
-        self.direction += (self.k_right + self.k_left)
-        self.image = pygame.transform.rotate(self.srcImage, self.direction)
-        self.rect = self.image.get_rect()
-        self.rect.center = self.position
 
 
 class RepulsiveBallSprite(BaseBallSprite):
@@ -84,9 +95,10 @@ class RepulsiveBallSprite(BaseBallSprite):
         self.srcImage = image
         self.position = position
         self.ballMain = ballMain
+        self.bounce = True
 
-    def update(self, deltaT):
-        # SIMULATION
+    def computeAcceleration(self):
+        # compute acceleration
         vecToMain = (
             self.position[0] - self.ballMain.position[0],
             self.position[1] - self.ballMain.position[1])
@@ -97,14 +109,3 @@ class RepulsiveBallSprite(BaseBallSprite):
         else:
             self.accelerationX = 0
             self.accelerationY = 0
-
-        self.updateSpeed()
-
-        # update position
-        self.updatePosition(True)
-
-        # update image and rect
-        self.direction += (self.speedX + self.speedY) / 2
-        self.image = pygame.transform.rotate(self.srcImage, self.direction)
-        self.rect = self.image.get_rect()
-        self.rect.center = self.position
