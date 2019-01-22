@@ -46,3 +46,7 @@ Start the game with:
 ```
 python repulsiveruby
 ```
+
+## Misc
+
+Documentation: [link](https://wq2012.github.io/RepulsiveRuby/index.html)
